@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Northwind.Business.Abstract;
+using Northwind.Entities.Concrete;
 
 namespace Northwind.API.Controllers
 {
@@ -16,7 +17,6 @@ namespace Northwind.API.Controllers
         [HttpGet()]
         public IActionResult GetAll()
         {
-            Thread.Sleep(1000);
 
             var result = _productService.GetAll();
             if (result.Success)
@@ -25,6 +25,40 @@ namespace Northwind.API.Controllers
             }
             return BadRequest(result);
 
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
+        [HttpPost]
+        public IActionResult Add(Product product)
+        {
+            var result = _productService.Add(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPut]
+        public IActionResult Update(Product product)
+        {
+            var result = _productService.Update(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
     }

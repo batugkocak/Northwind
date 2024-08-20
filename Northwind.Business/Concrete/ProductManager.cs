@@ -1,5 +1,4 @@
-﻿using Core.DataAccess.EntityFramework;
-using Northwind.Business.Abstract;
+﻿using Northwind.Business.Abstract;
 using Northwind.Business.Utilities.Results;
 using Northwind.DataAccess.Abstract;
 using Northwind.Entities.Concrete;
@@ -9,7 +8,7 @@ namespace Northwind.Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        ICategoryService _categoryService;
+     
 
         public ProductManager(IProductDal productDal)
         {
@@ -18,13 +17,15 @@ namespace Northwind.Business.Concrete
 
         public IResult Add(Product product)
         {
-            throw new NotImplementedException();
+             _productDal.Add(product);
+
+            return new SuccessResult( "Ürün eklendi.");
         }
 
         public IDataResult<List<Product>> GetAll()
         {
             Random rnd = new Random();
-            if (rnd.Next(1) == 1)
+            if (rnd.Next(2) == 1)
             {
                 return new ErrorDataResult<List<Product>>("Bakım var!");
             }
@@ -34,12 +35,17 @@ namespace Northwind.Business.Concrete
 
         public IDataResult<Product> GetById(int productId)
         {
-            throw new NotImplementedException();
+
+            var result = _productDal.Get(p => p.ProductId == productId);
+                
+            return new SuccessDataResult<Product>(result, "Ürün bulundu.");
         }
 
         public IResult Update(Product product)
         {
-            throw new NotImplementedException();
+             _productDal.Update(product);
+
+            return new SuccessDataResult<Product>(product, "Ürün güncellendi.");
         }
     }
 }
