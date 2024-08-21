@@ -2,6 +2,7 @@
 using Northwind.Business.Utilities.Results;
 using Northwind.DataAccess.Abstract;
 using Northwind.Entities.Concrete;
+using Northwind.Entities.DTOs;
 
 namespace Northwind.Business.Concrete
 {
@@ -39,6 +40,23 @@ namespace Northwind.Business.Concrete
             var result = _productDal.Get(p => p.ProductId == productId);
                 
             return new SuccessDataResult<Product>(result, "Ürün bulundu.");
+        }
+
+        public IDataResult<ProductDetailDto> GetDetailsById(int productId)
+        {
+            var result = _productDal.GetProductDetailsById(productId);
+            if (result == null)
+            {
+                return new ErrorDataResult<ProductDetailDto>("Bu ID'ye ait ürün bulunamadı.");
+            }
+            return new SuccessDataResult<ProductDetailDto>("Ürün bulundu.");
+        }
+
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
+        {
+            var result = _productDal.GetProductDetails();
+
+            return new SuccessDataResult<List<ProductDetailDto>>(result, "Ürünler listelendi.");
         }
 
         public IResult Update(Product product)

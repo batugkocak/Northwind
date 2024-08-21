@@ -27,10 +27,35 @@ namespace Northwind.API.Controllers
 
         }
 
+        [HttpGet("details")]
+        public IActionResult GetDetailsAll()
+        {
+
+            var result = _productService.GetProductDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
+        [HttpGet("{id}/details")]
+        public IActionResult GetDetailsById(int id)
+        {
+            var result = _productService.GetDetailsById(id);
             if (result.Success)
             {
                 return Ok(result);
