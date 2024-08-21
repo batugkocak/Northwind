@@ -1,4 +1,5 @@
 ﻿using Northwind.Business.Abstract;
+using Northwind.Business.Constants;
 using Northwind.Business.Utilities.Results;
 using Northwind.DataAccess.Abstract;
 using Northwind.Entities.Concrete;
@@ -20,7 +21,7 @@ namespace Northwind.Business.Concrete
         {
              _productDal.Add(product);
 
-            return new SuccessResult( "Ürün eklendi.");
+            return new SuccessResult(Messages.Added);
         }
 
         public IDataResult<List<Product>> GetAll()
@@ -28,10 +29,10 @@ namespace Northwind.Business.Concrete
             Random rnd = new Random();
             if (rnd.Next(2) == 1)
             {
-                return new ErrorDataResult<List<Product>>("Bakım var!");
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
 
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), "Ürünler listelendi.");
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.Listed);
         }
 
         public IDataResult<Product> GetById(int productId)
@@ -39,7 +40,7 @@ namespace Northwind.Business.Concrete
 
             var result = _productDal.Get(p => p.ProductId == productId);
                 
-            return new SuccessDataResult<Product>(result, "Ürün bulundu.");
+            return new SuccessDataResult<Product>(result, Messages.Listed);
         }
 
         public IDataResult<ProductDetailDto> GetDetailsById(int productId)
@@ -47,23 +48,23 @@ namespace Northwind.Business.Concrete
             var result = _productDal.GetProductDetailsById(productId);
             if (result == null)
             {
-                return new ErrorDataResult<ProductDetailDto>("Bu ID'ye ait ürün bulunamadı.");
+                return new ErrorDataResult<ProductDetailDto>(Messages.NotFound);
             }
-            return new SuccessDataResult<ProductDetailDto>("Ürün bulundu.");
+            return new SuccessDataResult<ProductDetailDto>(Messages.Listed);
         }
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
             var result = _productDal.GetProductDetails();
 
-            return new SuccessDataResult<List<ProductDetailDto>>(result, "Ürünler listelendi.");
+            return new SuccessDataResult<List<ProductDetailDto>>(result, Messages.Listed);
         }
 
         public IResult Update(Product product)
         {
              _productDal.Update(product);
 
-            return new SuccessDataResult<Product>(product, "Ürün güncellendi.");
+            return new SuccessDataResult<Product>(product, Messages.Updated);
         }
     }
 }
